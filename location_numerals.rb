@@ -19,10 +19,9 @@ class LocationNumeralConverter
   end
 
   def num_to_numeral(num)
+    descending_powers_of_2 = @sign_values.values.reverse
 
   end
 end
 
-lnc = LocationNumeralConverter.new
-puts lnc.numeral_to_num('abc')
-puts lnc.sign_values['a']
+
