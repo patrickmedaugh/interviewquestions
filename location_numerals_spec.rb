@@ -2,7 +2,7 @@ require 'rspec'
 require_relative 'location_numerals.rb'
 
 RSpec.describe LocationNumeralConverter, "#numeral_to_num" do
-  before(:context) do
+  before(:all) do
     @lnc = LocationNumeralConverter.new
   end
 
@@ -34,8 +34,7 @@ RSpec.describe LocationNumeralConverter, "#numeral_to_num" do
     end
 
     it 'can take a numeral larger than 2**26' do
-      expect(@lnc.num_to_numeral(67108864)).to eq('zz')
-      expect(@lnc.numeral_to_num('zz')).to eq('')
+      expect(@lnc.simplify('aabcdefghijklmnopqrstuvwxyz')).to eq('zz')
     end
   end
 end

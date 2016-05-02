@@ -1,5 +1,5 @@
 class LocationNumeralConverter
-  attr_reader :sign_values
+  attr_reader :sign_values, :descending_powers_of_2, :sign_letters
 
   def initialize
     @sign_values = {}
@@ -8,30 +8,26 @@ class LocationNumeralConverter
       @sign_values[letter] = 2**count
       count += 1
     end
+    @descending_powers_of_2 = @sign_values.values.reverse
+    @sign_letters = @sign_values.invert
   end
 
   def numeral_to_num(numeral)
     numerals = numeral.split('')
-    sum = 0
-    numerals.each do |sign_value|
+    numerals.reduce(0) do |sum, sign_value|
       sum += @sign_values[sign_value]
     end
-    sum
   end
 
   def num_to_numeral(num, numeral_letters=[])
-    descending_powers_of_2 = @sign_values.values.reverse
-    inverted_sign_values = @sign_values.invert
-
-    descending_powers_of_2.each do |number|
+    @descending_powers_of_2.each do |number|
       if number <= num
-        numeral_letters.push inverted_sign_values[number]
+        numeral_letters.push sign_letters[number]
         num -= number
-        break if num >= 33554432
+        break if num >= sign_values['z']
       end
     end
-    require 'pry';binding.pry
-    num_to_numeral(num, numeral_letters) if num >= 33554432
+    num_to_numeral(num, numeral_letters) if num >= sign_values['z']
     numeral_letters.sort.join
   end
 
